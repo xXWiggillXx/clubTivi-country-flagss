@@ -9,6 +9,7 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 40
 
     steps:
       - uses: actions/checkout@v4
@@ -25,6 +26,7 @@ jobs:
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
+          flutter-version: '3.41.2'
           channel: stable
           cache: true
 
@@ -34,10 +36,12 @@ jobs:
 
       - name: Generate code
         working-directory: source/clubTivi-main
+        timeout-minutes: 10
         run: dart run build_runner build --delete-conflicting-outputs
 
       - name: Build APK
         working-directory: source/clubTivi-main
+        timeout-minutes: 25
         run: flutter build apk --release
 
       - name: Save APK
